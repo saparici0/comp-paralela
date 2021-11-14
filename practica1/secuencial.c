@@ -21,11 +21,11 @@ int main(){
         { 0,-3,-2,-1,-1,-1,-2,-3, 0},
         {-1,-3,-1, 9, 9, 9,-1,-3,-1},
         {-1,-3,-1, 9,19, 9,-1,-3,-1},
-        {-1,-3,-1, 9, 9, 9,-1,-3,-1},,
+        {-1,-3,-1, 9, 9, 9,-1,-3,-1},
         { 0,-3,-2,-1,-1,-1,-2,-3, 0},
         { 0,-2,-3,-3,-3,-3,-3,-2, 0},
         { 0, 0, 0,-1,-1,-1, 0, 0, 0},
-    }
+    };
     
     size_t img_size = width * height * channels;
     int gray_channels = channels == 4 ? 2 : 1;
@@ -36,7 +36,7 @@ int main(){
 
     for(unsigned char *p = img, *pg = gray_img; p != img + img_size; p+= channels, pg += gray_channels){
         *pg = (uint8_t)((*p + *(p+1)+ *(p+2) )/ 3.0);
-        if(gray_channels == 4) *(pg+1) = *(p+3);
+        if(channels == 4) *(pg+1) = *(p+3);
     }
 
     //Guardar imagen jpg
