@@ -6,6 +6,26 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image/stb_image_write.h"
 
+unsigned char kern_mat_mul(unsigned char *A, int *K, int A_size, int K_size) {
+    int sum = 0;
+    for (int i=0; i<K_size; i++, A+=A_size-K_size) {
+        for (int j=0; j<K_size; j++, A++, K++) {
+            sum += ((*A)*(*K));
+        }
+    }
+    return (uint8_t) fmin(fmax(0,sum),255);
+}
+
+unsigned char kern_mat_mul_ch(unsigned char *A, int *K, int A_size, int K_size) {
+    int sum = 0;
+    for (int i=0; i<K_size; i++, A+=A_size-K_size) {
+        for (int j=0; j<K_size; j++, A++, K++) {
+            sum += ((*A)*(*K));
+        }
+    }
+    return (uint8_t) fmin(fmax(0,sum),255);
+}
+
 int main(){
     int width, height, channels;
     unsigned char *img = stbi_load("img/img.png", &width, &height, &channels, 0);
@@ -15,6 +35,8 @@ int main(){
     }
     printf("Loaded image with a width of %dpx, a height of %dpx and %d channels\n", width, height, channels);
 
+    const int k_size = 9;
+    
     int kernel[9][9] = {
         { 0, 0, 0,-1,-1,-1, 0, 0, 0},
         { 0,-2,-3,-3,-3,-3,-3,-2, 0},
@@ -32,15 +54,35 @@ int main(){
     size_t gray_img_size = width * height * gray_channels;
 
     unsigned char *gray_img = malloc(gray_img_size);
-    if(gray_img == NULL){ printf("Error al reservar memoria");return(1);}
+    if(gray_img == NULL){ printf("Error al reservar memoria"); return(1);}
 
-    for(unsigned char *p = img, *pg = gray_img; p != img + img_size; p+= channels, pg += gray_channels){
+    for(unsigned char *p = img, *pg = gray_img; p != img + img_size; p+= channels, pg += gray_channels) {
         *pg = (uint8_t)((*p + *(p+1)+ *(p+2) )/ 3.0);
         if(channels == 4) *(pg+1) = *(p+3);
     }
 
     //Guardar imagen jpg
-    stbi_write_jpg("img/img_gris.png", width, height, gray_channels, gray_img, 100);
+    stbi_write_jpg("img/img_gris.jpg", width, height, gray_channels, gray_img, 100);
     stbi_image_free(img);
-    free(gray_img);
+
+    width -= k_size;
+    height -= k_size;
+    size_t cont_img_size = width * height * gray_channels;
+
+    unsigned char *cont_img = malloc(cont_img_size);
+    if(cont_img == NULL){ printf("Error al reservar memoria"); return(1);}
+
+    int i=0;
+    for (unsigned char *pg = gray_img, *pc = cont_img; i<height; i++, pg+=k_size*gray_channels) {
+        for (int j=0; j<width; j++, pg+=gray_channels, pc+=gray_channels) {
+            *pc = (int8_t) kern_mat_mul(pg, &kernel[0][0], width+k_size, k_size);
+            //printf("%u %i %i\n", (unsigned char) *pc, i, j);
+        }
+    }
+
+    stbi_write_jpg("img/img_contraste.jpg", width, height, gray_channels, cont_img, 100);
+    stbi_image_free(gray_img);
+
+    free(cont_img);
 }
+
