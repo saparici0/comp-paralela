@@ -16,10 +16,10 @@ unsigned char kern_mat_mul(unsigned char *A, int *K, int A_size, int K_size) {
     return (uint8_t) fmin(fmax(0,sum),255);
 }
 
-unsigned char kern_mat_mul_ch(unsigned char *A, int *K, int A_size, int K_size) {
+unsigned char kern_mat_mul_ch(unsigned char *A, int *K, int A_size, int K_size, int channels) {
     int sum = 0;
-    for (int i=0; i<K_size; i++, A+=A_size-K_size) {
-        for (int j=0; j<K_size; j++, A++, K++) {
+    for (int i=0; i<K_size; i++, A+=(A_size-K_size)*channels) {
+        for (int j=0; j<K_size; j++, A+=channels, K++) {
             sum += ((*A)*(*K));
         }
     }
@@ -28,7 +28,7 @@ unsigned char kern_mat_mul_ch(unsigned char *A, int *K, int A_size, int K_size) 
 
 int main(){
     int width, height, channels;
-    unsigned char *img = stbi_load("img/img.png", &width, &height, &channels, 0);
+    unsigned char *img = stbi_load("img/templos.jpg", &width, &height, &channels, 0);
     if(img == NULL) {
        printf("Error in loading the image\n");
        exit(1);
@@ -49,6 +49,28 @@ int main(){
         { 0, 0, 0,-1,-1,-1, 0, 0, 0},
     };
     
+    width -= k_size;
+    height -= k_size;
+    size_t cont_img_size = width * height * channels;
+
+    unsigned char *cont_mult_img = malloc(cont_img_size);
+    if(cont_mult_img == NULL){ printf("Error al reservar memoria"); return(1);}
+
+    int i=0;
+    for (unsigned char *pg = img, *pc = cont_mult_img; i<height; i++, pg+=k_size*channels) {
+        for (int j=0; j<width; j++, pg+=channels, pc+=channels) {
+            *pc = (int8_t) kern_mat_mul_ch(pg, &kernel[0][0], width+k_size, k_size, channels);
+            *(pc+1) = (int8_t) kern_mat_mul_ch((pg+1), &kernel[0][0], width+k_size, k_size, channels);
+            *(pc+2) = (int8_t) kern_mat_mul_ch((pg+2), &kernel[0][0], width+k_size, k_size, channels);
+            //printf("%u %u %u %i %i\n", (unsigned char) *pc, (unsigned char) *(pc+1), (unsigned char) *(pc+2), i, j);
+        }
+    }
+
+    stbi_write_jpg("img/img_contraste_mult.jpg", width, height, channels, cont_mult_img, 100);
+
+    width += k_size;
+    height += k_size;
+    
     size_t img_size = width * height * channels;
     int gray_channels = channels == 4 ? 2 : 1;
     size_t gray_img_size = width * height * gray_channels;
@@ -67,12 +89,12 @@ int main(){
 
     width -= k_size;
     height -= k_size;
-    size_t cont_img_size = width * height * gray_channels;
+    cont_img_size = width * height * gray_channels;
 
     unsigned char *cont_img = malloc(cont_img_size);
     if(cont_img == NULL){ printf("Error al reservar memoria"); return(1);}
 
-    int i=0;
+    i=0;
     for (unsigned char *pg = gray_img, *pc = cont_img; i<height; i++, pg+=k_size*gray_channels) {
         for (int j=0; j<width; j++, pg+=gray_channels, pc+=gray_channels) {
             *pc = (int8_t) kern_mat_mul(pg, &kernel[0][0], width+k_size, k_size);
