@@ -28,7 +28,7 @@ unsigned char kern_mat_mul_ch(unsigned char *A, int *K, int A_size, int K_size, 
 
 int main(){
     int width, height, channels;
-    unsigned char *img = stbi_load("img/templos.jpg", &width, &height, &channels, 0);
+    unsigned char *img = stbi_load("img/casa.jpg", &width, &height, &channels, 0);
     if(img == NULL) {
        printf("Error in loading the image\n");
        exit(1);
