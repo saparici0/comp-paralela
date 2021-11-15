@@ -1,0 +1,54 @@
+Tiempo de procesamiento de img/720p.jpg con kernel=1 y opcion=c :0.656537
+
+Tiempo de procesamiento de img/720p.jpg con kernel=1 y opcion=g :0.329499
+
+Tiempo de procesamiento de img/720p.jpg con kernel=1 y opcion=cg :0.987620
+
+Tiempo de procesamiento de img/720p.jpg con kernel=2 y opcion=c :0.194911
+
+Tiempo de procesamiento de img/720p.jpg con kernel=2 y opcion=g :0.197968
+
+Tiempo de procesamiento de img/720p.jpg con kernel=2 y opcion=cg :0.435005
+
+Tiempo de procesamiento de img/720p.jpg con kernel=3 y opcion=c :0.203628
+
+Tiempo de procesamiento de img/720p.jpg con kernel=3 y opcion=g :0.182722
+
+Tiempo de procesamiento de img/720p.jpg con kernel=3 y opcion=cg :0.401343
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 y opcion=c :1.629825
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 y opcion=g :0.896509
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 y opcion=cg :2.664710
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=2 y opcion=c :0.616827
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=2 y opcion=g :0.585032
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=2 y opcion=cg :1.184553
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=3 y opcion=c :0.423907
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=3 y opcion=g :0.471814
+
+Tiempo de procesamiento de img/1080p.jpg con kernel=3 y opcion=cg :0.970613
+
+Tiempo de procesamiento de img/4k.jpg con kernel=1 y opcion=c :7.184783
+
+Tiempo de procesamiento de img/4k.jpg con kernel=1 y opcion=g :3.644699
+
+Tiempo de procesamiento de img/4k.jpg con kernel=1 y opcion=cg :12.027817
+
+Tiempo de procesamiento de img/4k.jpg con kernel=2 y opcion=c :2.592307
+
+Tiempo de procesamiento de img/4k.jpg con kernel=2 y opcion=g :2.559088
+
+Tiempo de procesamiento de img/4k.jpg con kernel=2 y opcion=cg :5.232090
+
+Tiempo de procesamiento de img/4k.jpg con kernel=3 y opcion=c :2.397830
+
+Tiempo de procesamiento de img/4k.jpg con kernel=3 y opcion=g :2.267951
+
+Tiempo de procesamiento de img/4k.jpg con kernel=3 y opcion=cg :4.558300
+
