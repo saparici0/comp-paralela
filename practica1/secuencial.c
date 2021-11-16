@@ -61,7 +61,7 @@ int main(int argc, char **argv){
         {-1,0,1}
     },{ {1,2,1},
         {0,0,0},
-        {-1,-2-1}
+        {-1,-2,-1}
     }};
     
     if(!strcmp(argv[3],"cg") || !strcmp(argv[3],"c")){ // Filtro convolucional sobel sobre canales multicolor
