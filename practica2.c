@@ -1,5 +1,5 @@
-// gcc -std=c17 -fopenmp -Wall openmp.c -o openmp -lm
-// ./openmp ./img/720p.jpg 1 cg
+// gcc -std=c17 -fopenmp -Wall practica2.c -o practica2 -lm
+// ./practica2 ./img/720p.jpg 1 cg
 
 #include "omp.h"
 #include <stdio.h>
