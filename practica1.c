@@ -1,4 +1,4 @@
-// gcc -std=c17 -Wall secuencial.c -o secuencial -lm
+// gcc -std=c17 -Wall practica1.c -o secuencial -lm
 // ./secuencial ./img/720p.jpg 1 cg
 
 #include <stdio.h>
