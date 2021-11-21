@@ -23,7 +23,7 @@ unsigned char kern_mat_mul(unsigned char *A, int *K, int A_size, int K_size, int
 
 int main(int argc, char **argv){
     if(argc < 4){ // Verficacion de los argumentos necesarios
-        printf("Debe ingresar como primer argumento la ruta de la imagen, como segundo el numero de kernel (1-3) y como tercero la opcion de filtro (c (solo contraste en color), g (solo contraste en escala de grises) ó cg (ambas opciones)))");
+        printf("Debe ingresar la ruta de la imagen, el numero de kernel (1-3), la opcion de filtro (c (solo contraste en color), g (solo contraste en escala de grises) ó cg (ambas opciones))) y el número de hilos");
         return 0;
     }
       
@@ -42,7 +42,7 @@ int main(int argc, char **argv){
        printf("Error cargando la imagen\n");
        exit(1);
     }
-    printf("Image with width: %dpx, height: %dpx in %d channels\n", width, height, channels);
+    //printf("Image with width: %dpx, height: %dpx in %d channels\n", width, height, channels);
 
     struct timeval tval_before, tval_after; //Declaracion de variables de tiempo
     gettimeofday(&tval_before, NULL);
@@ -67,7 +67,7 @@ int main(int argc, char **argv){
         {-1,-2,-1}
     }};
 
-    const int n_secs = 2;
+    const int n_secs = thread_count*4;
     
     if(!strcmp(argv[3],"cg") || !strcmp(argv[3],"c")){ // Filtro convolucional sobel sobre canales multicolor
         int width_t = width - k_size; //Dimensiones de la nueva imagen
@@ -132,7 +132,8 @@ int main(int argc, char **argv){
 
         #pragma omp parallel for num_threads(thread_count)
         for (int sec=0; sec<n_secs; sec++){
-            int i=0; // Iteracion sobre la imagen
+            // Iteracion sobre la imagen
+            int i=0;
             for (unsigned char *pg = gray_img+sec*s_width*gray_channels, *pc = cont_img+sec*s_width*gray_channels; i<height_t; i++, pg+=(width-s_width)*gray_channels, pc+=(width_t-s_width)*gray_channels){ 
                 for (int j=0; j<s_width; j++, pg+=gray_channels, pc+=gray_channels) { // Multiplicacion convolucional de cada canal
                     *pc = (int8_t) kern_mat_mul(pg, &kernel[k][0][0], width, k_size, gray_channels);
@@ -148,6 +149,6 @@ int main(int argc, char **argv){
     }
 
     gettimeofday(&tval_after, NULL); // Medicion de tiempo
-    printf("Tiempo de procesamiento de %s con kernel=%s y opcion=%s :%f\n\n", argv[1],argv[2],argv[3], (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
+    printf("Tiempo de procesamiento de %s con kernel=%s opcion=%s y %d Hilos :, %f\n", argv[1],argv[2],argv[3], thread_count, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
 }
 
