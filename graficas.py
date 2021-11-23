@@ -25,9 +25,9 @@ for kernel in range(3):
     plt.plot(x,datos[kernel*15 + 5 ] / datos[kernel*15 + 5 : kernel*15 + 10])
     plt.plot(x,datos[kernel*15 + 10] / datos[kernel*15 + 10 : kernel*15 + 15])
     plt.legend(['720p','1080p','4k'])
-    plt.title("OMP Response Time Kernel "+str(kernel+1))
+    plt.title("SpeedUp Kernel "+str(kernel+1))
     plt.xlabel("Número de hilos")
-    plt.ylabel("Response Time (seg)")
+    plt.ylabel("SpeedUp")
     plt.savefig('graficas/Speed Up Kernel '+str(kernel+1)+'.jpg')
 
 
