@@ -68,11 +68,14 @@ int main(int argc, char **argv){
     }};
 
     const int n_secs = thread_count*4;
+    //const int n_secs = 100;
     
     if(!strcmp(argv[3],"cg") || !strcmp(argv[3],"c")){ // Filtro convolucional sobel sobre canales multicolor
         int width_t = width - k_size; //Dimensiones de la nueva imagen
         int height_t = height - k_size;
         size_t cont_img_size = width_t * height_t * channels;
+
+        printf("%li", cont_img_size);
 
         unsigned char *cont_mult_img = malloc(cont_img_size); // Reserva de memoria para la nueva imagen
         if(cont_mult_img == NULL){ printf("Error al reservar memoria\n"); return(1);}
