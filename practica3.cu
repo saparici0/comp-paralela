@@ -153,7 +153,7 @@ int main(int argc, char **argv){
     int n_threads = height_t;
     int blocks_per_grid = n_threads/threads_per_block+1;
 
-    printf("CUDA kernel launch with %d blocks of %d threads\n", blocks_per_grid, threads_per_block);
+    //printf("CUDA kernel launch with %d blocks of %d threads\n", blocks_per_grid, threads_per_block);
     kern_mat_mul<<<blocks_per_grid, threads_per_block>>>(d_img, d_k, d_cont_img, width, height, k_size, channels);
     
     cudaError_t cudaerr = cudaDeviceSynchronize();
@@ -206,5 +206,5 @@ int main(int argc, char **argv){
     stbi_image_free(cont_mult_img);
 
     gettimeofday(&tval_after, NULL); // Medicion de tiempo
-    printf("Tiempo de procesamiento de %s con kernel=%s opcion=%s y %d hilos por block: %f\n", argv[1],argv[2],argv[3], threads_per_block, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
+    printf("Tiempo de procesamiento de %s con kernel=%s opcion=%s y %d hilos por block:, %f\n", argv[1],argv[2],argv[3], threads_per_block, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
 }
