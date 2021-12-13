@@ -73,3 +73,33 @@ Tiempo de procesamiento de img/12k.jpg con kernel=3 opcion=cg y 2 Hilos :, 23.57
 Tiempo de procesamiento de img/12k.jpg con kernel=3 opcion=cg y 4 Hilos :, 21.163047
 Tiempo de procesamiento de img/12k.jpg con kernel=3 opcion=cg y 8 Hilos :, 21.595161
 Tiempo de procesamiento de img/12k.jpg con kernel=3 opcion=cg y 16 Hilos :, 21.560796
+CUDA kernel launch with 45 blocks of 16 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 16 hilos por block: 0.253033
+CUDA kernel launch with 23 blocks of 32 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 32 hilos por block: 0.222592
+CUDA kernel launch with 12 blocks of 64 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 64 hilos por block: 0.250509
+CUDA kernel launch with 6 blocks of 128 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 128 hilos por block: 0.216526
+CUDA kernel launch with 3 blocks of 256 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 256 hilos por block: 0.246841
+CUDA kernel launch with 2 blocks of 512 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 512 hilos por block: 0.275956
+6140043Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 16 Hilos :, 0.964592
+6140043Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 32 Hilos :, 0.961359
+6140043Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 64 Hilos :, 0.968938
+6140043Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 128 Hilos :, 0.883714
+6140043Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 256 Hilos :, 0.718966
+CUDA kernel launch with 3 blocks of 512 threads
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 512 hilos por block: 0.450201
+24721443Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 16 Hilos :, 4.164070
+24721443Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 32 Hilos :, 4.126596
+24721443Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 64 Hilos :, 4.196400
+24721443Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 128 Hilos :, 4.122932
+24721443Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 256 Hilos :, 3.762887
+CUDA kernel launch with 5 blocks of 512 threads
+Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 512 hilos por block: 1.623874
+99209043Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 16 Hilos :, 11.919942
+99209043Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 32 Hilos :, 11.996795
+99209043Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 64 Hilos :, 11.920621
+99209043Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 128 Hilos :, 12.212876

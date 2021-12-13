@@ -8,9 +8,9 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image/stb_image_write.h"
 
-#define BLOCKSPERGRID 10
+#define BLOCKSPERGRID 1
 
-__global__ void kern_mat_mul(const unsigned char *A, const int *K, unsigned char *B, int A_size, int K_size, int channels){
+__global__ void kern_mat_mul(const unsigned char *A, const int *K, unsigned char *B, int A_size, int max_row, int K_size, int channels){
     
     __shared__ int kernel[9][9];
 
@@ -20,20 +20,20 @@ __global__ void kern_mat_mul(const unsigned char *A, const int *K, unsigned char
 
     int row = blockDim.x * blockIdx.x + threadIdx.x;
 
-    //if(row%10 == 0) printf("%i ", kernel[4][4]);
-
-    for(int c=0; c<(A_size-K_size)*channels; c++){
-        int sum = 0; 
-        int ai = row * A_size * channels + c;
-        for (int i=0; i<K_size; i++, ai+=(A_size-K_size)*channels) { // Iteracion sobre la matriz
-            for (int j=0; j<K_size; j++, ai+=channels) {
-                sum += ((*(A+ai))*(kernel[i][j]));
+    if(row <= max_row) {
+        for(int c=0; c<(A_size-K_size)*channels; c++) {
+            int sum = 0; 
+            int ai = row * A_size * channels + c;
+            for (int i=0; i<K_size; i++, ai+=(A_size-K_size)*channels) { // Iteracion sobre la matriz
+                for (int j=0; j<K_size; j++, ai+=channels) {
+                    sum += ((*(A+ai))*(kernel[i][j]));
+                }
             }
+            
+            if (sum > 255) sum = 255;
+            else if (sum <0) sum = 0;
+            *(B + row * (A_size-K_size) * channels + c) = (uint8_t) sum;
         }
-        
-        if (sum > 255) sum = 255;
-        else if (sum <0) sum = 0;
-        *(B + row * (A_size-K_size) * channels + c) = (uint8_t) sum;
     }
 }
 
@@ -53,17 +53,13 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    int thread_count = atoi(argv[4]);
+    int threads_per_block = atoi(argv[4]);
     
     unsigned char *img = stbi_load(argv[1], &width, &height, &channels, 0); // Cargue de la imagen
     if(img == NULL) { //Verificacion de la imagen
        printf("Error cargando la imagen\n");
        exit(1);
     }
-    //printf("Image with width: %dpx, height: %dpx in %d channels\n", width, height, channels);
-
-    struct timeval tval_before, tval_after; //Declaracion de variables de tiempo
-    gettimeofday(&tval_before, NULL);
 
     const int k_size = k == 0 ? 9 : 3;
     
@@ -84,6 +80,9 @@ int main(int argc, char **argv){
         { 0, 0, 0},
         {-1,-2,-1}
     }};
+
+    struct timeval tval_before, tval_after; //Declaracion de variables de tiempo
+    gettimeofday(&tval_before, NULL);
     
     int width_t = width - k_size; //Dimensiones de la nueva imagen
     int height_t = height - k_size;
@@ -100,7 +99,6 @@ int main(int argc, char **argv){
     if(h_k == NULL){ printf("Error al reservar memoria kernel host\n"); return(1);}
     
     for(int i=0; i<k_size*k_size; i++){
-        //printf("%i %i %i\n", i/k_size, i-(i/k_size)*k_size, kernels[k][i/k_size][i-(i/k_size)*k_size]);
         *(h_k+i) = kernels[k][i/k_size][i-(i/k_size)*k_size];
     }
 
@@ -153,11 +151,10 @@ int main(int argc, char **argv){
     //
 
     int n_threads = height_t;
-    int blocks_per_grid = BLOCKSPERGRID;
-    int threads_per_block = n_threads/blocks_per_grid;
+    int blocks_per_grid = n_threads/threads_per_block+1;
 
     printf("CUDA kernel launch with %d blocks of %d threads\n", blocks_per_grid, threads_per_block);
-    kern_mat_mul<<<blocks_per_grid, threads_per_block>>>(d_img, d_k, d_cont_img, width, k_size, channels);
+    kern_mat_mul<<<blocks_per_grid, threads_per_block>>>(d_img, d_k, d_cont_img, width, height, k_size, channels);
     
     cudaError_t cudaerr = cudaDeviceSynchronize();
     if (cudaerr != cudaSuccess)
@@ -168,7 +165,7 @@ int main(int argc, char **argv){
 
     if (err != cudaSuccess)
     {
-        fprintf(stderr, "Failed to launch vectorAdd kernel (error code %s)!\n", cudaGetErrorString(err));
+        fprintf(stderr, "Failed to launch kernel (error code %s)!\n", cudaGetErrorString(err));
         exit(EXIT_FAILURE);
     }
 
@@ -209,5 +206,5 @@ int main(int argc, char **argv){
     stbi_image_free(cont_mult_img);
 
     gettimeofday(&tval_after, NULL); // Medicion de tiempo
-    printf("Tiempo de procesamiento de %s con kernel=%s opcion=%s y %d Hilos :, %f\n", argv[1],argv[2],argv[3], thread_count, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
+    printf("Tiempo de procesamiento de %s con kernel=%s opcion=%s y %d hilos por block: %f\n", argv[1],argv[2],argv[3], threads_per_block, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
 }

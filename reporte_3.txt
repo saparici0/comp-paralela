@@ -1,0 +1,60 @@
+CUDA kernel launch with 45 blocks of 16 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 16 hilos por block: 0.232088
+CUDA kernel launch with 23 blocks of 32 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 32 hilos por block: 0.246458
+CUDA kernel launch with 12 blocks of 64 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 64 hilos por block: 0.231188
+CUDA kernel launch with 6 blocks of 128 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 128 hilos por block: 0.251948
+CUDA kernel launch with 3 blocks of 256 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 256 hilos por block: 0.232234
+CUDA kernel launch with 2 blocks of 512 threads
+Tiempo de procesamiento de img/720p.jpg con kernel=1 opcion=cg y 512 hilos por block: 0.287203
+CUDA kernel launch with 67 blocks of 16 threads
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 16 hilos por block: 0.378384
+CUDA kernel launch with 34 blocks of 32 threads
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 32 hilos por block: 0.378060
+CUDA kernel launch with 17 blocks of 64 threads
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 64 hilos por block: 0.403971
+CUDA kernel launch with 9 blocks of 128 threads
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 128 hilos por block: 0.375678
+CUDA kernel launch with 5 blocks of 256 threads
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 256 hilos por block: 0.350572
+CUDA kernel launch with 3 blocks of 512 threads
+Tiempo de procesamiento de img/1080p.jpg con kernel=1 opcion=cg y 512 hilos por block: 0.421457
+CUDA kernel launch with 135 blocks of 16 threads
+Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 16 hilos por block: 1.642553
+CUDA kernel launch with 68 blocks of 32 threads
+Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 32 hilos por block: 1.621321
+CUDA kernel launch with 34 blocks of 64 threads
+Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 64 hilos por block: 1.647365
+CUDA kernel launch with 17 blocks of 128 threads
+Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 128 hilos por block: 1.662566
+CUDA kernel launch with 9 blocks of 256 threads
+Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 256 hilos por block: 1.645885
+CUDA kernel launch with 5 blocks of 512 threads
+Tiempo de procesamiento de img/4k.jpg con kernel=1 opcion=cg y 512 hilos por block: 1.638977
+CUDA kernel launch with 270 blocks of 16 threads
+Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 16 hilos por block: 3.429913
+CUDA kernel launch with 135 blocks of 32 threads
+Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 32 hilos por block: 4.812270
+CUDA kernel launch with 68 blocks of 64 threads
+Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 64 hilos por block: 4.758070
+CUDA kernel launch with 34 blocks of 128 threads
+Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 128 hilos por block: 4.739358
+CUDA kernel launch with 17 blocks of 256 threads
+Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 256 hilos por block: 4.792269
+CUDA kernel launch with 9 blocks of 512 threads
+Tiempo de procesamiento de img/8k.jpg con kernel=1 opcion=cg y 512 hilos por block: 4.434715
+CUDA kernel launch with 351 blocks of 16 threads
+Tiempo de procesamiento de img/12k.jpg con kernel=1 opcion=cg y 16 hilos por block: 13.169875
+CUDA kernel launch with 176 blocks of 32 threads
+Tiempo de procesamiento de img/12k.jpg con kernel=1 opcion=cg y 32 hilos por block: 18.620925
+CUDA kernel launch with 88 blocks of 64 threads
+Tiempo de procesamiento de img/12k.jpg con kernel=1 opcion=cg y 64 hilos por block: 20.240902
+CUDA kernel launch with 44 blocks of 128 threads
+Tiempo de procesamiento de img/12k.jpg con kernel=1 opcion=cg y 128 hilos por block: 19.307016
+CUDA kernel launch with 22 blocks of 256 threads
+Tiempo de procesamiento de img/12k.jpg con kernel=1 opcion=cg y 256 hilos por block: 18.908741
+CUDA kernel launch with 11 blocks of 512 threads
+Tiempo de procesamiento de img/12k.jpg con kernel=1 opcion=cg y 512 hilos por block: 19.871128
