@@ -20,14 +20,13 @@ __global__ void kern_mat_mul(const unsigned char *A, const int *K, unsigned char
 
     int row = blockDim.x * blockIdx.x + threadIdx.x;
 
-    int ai = row * A_size * channels;
-
     if(row <= max_row) {
-        for(int c=0; c<(A_size-K_size)*channels; c++, ai++) {
+        for(int c=0; c<(A_size-K_size)*channels; c++) {
             int sum = 0; 
+            int ai = row * A_size * channels + c;
             for (int i=0; i<K_size; i++, ai+=(A_size-K_size)*channels) { // Iteracion sobre la matriz
                 for (int j=0; j<K_size; j++, ai+=channels) {
-                    sum += ((*(A+ai))*(kernel[i][j]));
+                    sum += ( (*(A+ai)) * (kernel[i][j]) );
                 }
             }
             
@@ -156,6 +155,11 @@ int main(int argc, char **argv){
 
     printf("CUDA kernel launch with %d blocks of %d threads\n", blocks_per_grid, threads_per_block);
     kern_mat_mul<<<blocks_per_grid, threads_per_block>>>(d_img, d_k, d_cont_img, width, height, k_size, channels);
+    
+    cudaError_t cudaerr = cudaDeviceSynchronize();
+    if (cudaerr != cudaSuccess)
+    printf("kernel launch failed with error \"%s\".\n",
+    cudaGetErrorString(cudaerr));
     
     err = cudaGetLastError();
 
