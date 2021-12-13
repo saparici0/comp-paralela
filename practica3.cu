@@ -206,5 +206,5 @@ int main(int argc, char **argv){
     stbi_image_free(cont_mult_img);
 
     gettimeofday(&tval_after, NULL); // Medicion de tiempo
-    printf("Tiempo de procesamiento de %s con kernel=%s opcion=%s y %d hilos por block:, %f\n", argv[1],argv[2],argv[3], threads_per_block, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
+    printf("Tiempo de procesamiento de %s con %d bloques, opcion=%s y %d hilos por bloque:, %f\n", argv[1], blocks_per_grid, argv[3], threads_per_block, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
 }
