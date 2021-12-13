@@ -34,7 +34,7 @@
 ################################################################################
 
 # Location of the CUDA Toolkit
-CUDA_PATH ?= /usr/local/cuda-11.1
+CUDA_PATH ?= /usr/local/cuda-11.5
 
 ##############################
 # start deprecated interface #
@@ -203,12 +203,13 @@ ifneq ($(TARGET_ARCH),$(HOST_ARCH))
             LDFLAGS += -rpath-link=$(TARGET_FS)/usr/lib -L$(TARGET_FS)/usr/lib
             LDFLAGS += -rpath-link=$(TARGET_FS)/usr/lib/aarch64-linux-gnu -L$(TARGET_FS)/usr/lib/aarch64-linux-gnu
             LDFLAGS += --unresolved-symbols=ignore-in-shared-libs
-            CCFLAGS += -isystem=$(TARGET_FS)/usr/include  -I$(TARGET_FS)/usr/include
+            CCFLAGS += -isystem=$(TARGET_FS)/usr/include -I$(TARGET_FS)/usr/include -I$(TARGET_FS)/usr/include/libdrm
             CCFLAGS += -isystem=$(TARGET_FS)/usr/include/aarch64-linux-gnu -I$(TARGET_FS)/usr/include/aarch64-linux-gnu
         endif
     endif
     ifeq ($(TARGET_ARCH)-$(TARGET_OS),aarch64-qnx)
-        NVCCFLAGS += --qpp-config 5.4.0,gcc_ntoaarch64le
+        NVCCFLAGS += -D_QNX_SOURCE
+        NVCCFLAGS += --qpp-config 8.3.0,gcc_ntoaarch64le
         CCFLAGS += -DWIN_INTERFACE_CUSTOM -I/usr/include/aarch64-qnx-gnu
         LDFLAGS += -lsocket
         LDFLAGS += -L/usr/lib/aarch64-qnx-gnu
@@ -222,6 +223,7 @@ ifneq ($(TARGET_ARCH),$(HOST_ARCH))
             CCFLAGS += "-Wl\,-rpath-link\,$(TARGET_FS)/usr/lib"
             LDFLAGS += -L$(TARGET_FS)/usr/libnvidia
             CCFLAGS += "-Wl\,-rpath-link\,$(TARGET_FS)/usr/libnvidia"
+            CCFLAGS += -I$(TARGET_FS)/../include
         endif
     endif
 endif
@@ -277,6 +279,31 @@ LIBRARIES :=
 
 ################################################################################
 
+#Detect if installed version of GCC supports required C++11
+ifeq ($(TARGET_OS),linux)
+    empty :=
+    space := $(empty) $(empty)
+    GCCVERSIONSTRING := $(shell expr `$(HOST_COMPILER) -dumpversion`)
+#Create version number without "."
+    GCCVERSION := $(shell expr `echo $(GCCVERSIONSTRING)` | cut -f1 -d.)
+    GCCVERSION += $(shell expr `echo $(GCCVERSIONSTRING)` | cut -f2 -d.)
+    GCCVERSION += $(shell expr `echo $(GCCVERSIONSTRING)` | cut -f3 -d.)
+# Make sure the version number has at least 3 decimals
+    GCCVERSION += 00
+# Remove spaces from the version number
+    GCCVERSION := $(subst $(space),$(empty),$(GCCVERSION))
+#$(warning $(GCCVERSION))
+
+    IS_MIN_VERSION := $(shell expr `echo $(GCCVERSION)` \>= 51000)
+
+    ifeq ($(IS_MIN_VERSION), 1)
+        $(info >>> GCC Version is greater or equal to 5.1.0 <<<)
+    else
+        $(info >>> Waiving build. Minimum GCC version required is 5.1.0<<<)
+        SAMPLE_ENABLED := 0
+    endif
+endif
+
 # Gencode arguments
 SMS ?= 35 37 50 52 60 61 70 75 80 86
 
@@ -295,6 +322,8 @@ ifneq ($(HIGHEST_SM),)
 GENCODE_FLAGS += -gencode arch=compute_$(HIGHEST_SM),code=compute_$(HIGHEST_SM)
 endif
 endif
+
+ALL_CCFLAGS += --threads 0 --std=c++11
 
 ifeq ($(SAMPLE_ENABLED),0)
 EXEC ?= @echo "[@]"
