@@ -75,7 +75,7 @@ int main(int argc, char **argv){
         int height_t = height - k_size;
         size_t cont_img_size = width_t * height_t * channels;
 
-        printf("%li", cont_img_size);
+        //printf("%li", cont_img_size);
 
         unsigned char *cont_mult_img = malloc(cont_img_size); // Reserva de memoria para la nueva imagen
         if(cont_mult_img == NULL){ printf("Error al reservar memoria\n"); return(1);}
@@ -154,4 +154,3 @@ int main(int argc, char **argv){
     gettimeofday(&tval_after, NULL); // Medicion de tiempo
     printf("Tiempo de procesamiento de %s con kernel=%s opcion=%s y %d Hilos :, %f\n", argv[1],argv[2],argv[3], thread_count, (tval_after.tv_sec + tval_after.tv_usec/1000000.0) - (tval_before.tv_sec + tval_before.tv_usec/1000000.0));
 }
-

@@ -1,5 +1,5 @@
 //mpicc -std=c17 -fopenmp practica4.c -o practica4 -lm
-//mpirun -np 4 practica4 ./img/1080p.jpg 1 cg 4
+//mpirun -np 4 practica4 ./img/1080p.jpg 1 cg 1
 
 #include <stdio.h>
 #include <string.h>
@@ -149,7 +149,6 @@ int main (int argc, char *argv[])
     const int n_secs = thread_count*4;
 
 	bool multicolor = !strcmp(argv[3],"cg") || !strcmp(argv[3],"c");
-	bool gray = !strcmp(argv[3],"cg") || !strcmp(argv[3],"g");
 	
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &tasks);
@@ -210,15 +209,6 @@ int main (int argc, char *argv[])
 						}
 					}
 				}
-
-				if(gray){
-					pedacito_gray_procesado = gray_filter(pedacito, width, pedacito_height, channels, k, k_size, thread_count);
-					for(int pixel=0; pixel<n_pedacito_procesado; pixel++){//Poner pedacito procesado en imagen final
-						for(int canal=0; canal < gray_channels; canal++){
-							gray_img[(pixel + pixel_inicial_resultado) * gray_channels + canal] = pedacito_gray_procesado[pixel*gray_channels + canal];
-						}
-					}
-				}
 			}else{
 				MPI_Ssend(message, n_variables, MPI_INT, p, tag, MPI_COMM_WORLD);
 				MPI_Ssend(pedacito,pedacito_size, MPI_UNSIGNED_CHAR, p, tag, MPI_COMM_WORLD);
@@ -230,25 +220,11 @@ int main (int argc, char *argv[])
 						}
 					}
 				}
-				if(gray){
-					MPI_Recv(pedacito_gray_procesado, pedacito_procesado_gray_size, MPI_UNSIGNED_CHAR,p, tag, MPI_COMM_WORLD, &status);
-					//printf("Gris recibido");
-					for(int pixel=0; pixel<n_pedacito_procesado; pixel++){//Poner pedacito procesado en imagen final
-						for(int canal=0; canal < gray_channels; canal++){
-							gray_img[(pixel + pixel_inicial_resultado) * gray_channels + canal] = pedacito_gray_procesado[pixel*gray_channels + canal];
-						}
-					}
-				}
-				/*
-				*/
 			}
 				
 		}
 		if(multicolor){
 			stbi_write_jpg("img/img_contraste_color.jpg", width_t, height_t, channels, multicolor_img, 100); // Guardado de la nueva imagen
-		}
-        if(gray){
-			stbi_write_jpg("img/img_contraste_gris.jpg", width_t, height_t, gray_channels, gray_img, 100); // Guardado de imagen
 		}
 		stbi_image_free(multicolor_img);
 		stbi_image_free(gray_img);
@@ -285,10 +261,6 @@ int main (int argc, char *argv[])
 		if(multicolor){
 			pedacito_multicolor_procesado = multicolor_filter(pedacito, width, pedacito_height, channels, k, k_size, thread_count);
 			MPI_Ssend(pedacito_multicolor_procesado, pedacito_procesado_multicolor_size, MPI_UNSIGNED_CHAR, 0, tag, MPI_COMM_WORLD);
-		}
-		if(gray){
-			pedacito_gray_procesado = gray_filter(pedacito, width, pedacito_height, channels, k, k_size, thread_count);
-			MPI_Ssend(pedacito_gray_procesado, pedacito_procesado_gray_size, MPI_UNSIGNED_CHAR, 0, tag, MPI_COMM_WORLD);
 		}
 		stbi_image_free(pedacito_multicolor_procesado);
 		stbi_image_free(pedacito_gray_procesado);

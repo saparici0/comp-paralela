@@ -1,3 +1,6 @@
+// make practica3
+// ./practica3 ./img/12k.jpg 1 c 8
+
 #include "omp.h"
 #include <cuda_runtime.h>
 #include <stdio.h>
